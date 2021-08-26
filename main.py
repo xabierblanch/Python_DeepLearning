@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.layers import Dense
 
 print('Tensorflow version: ', tf.__version__)
 print('Keras version: ', keras.__version__)
@@ -25,4 +26,13 @@ y_test = to_categorical(y_test, num_classes=10)
 # Model definition
 
 model = keras.Sequential()
-model.add(Dense())
+model.add(Dense(10, activation='sigmoid', input_shape=(784,)))
+model.add(Dense(10, activation='softmax'))
+
+model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=['accuracy'])
+
+model.fit(x_train, y_train, epochs=15, batch_size=0)
+
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print('Test accuracy: ', test_acc)
+
